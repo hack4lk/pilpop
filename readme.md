@@ -1,6 +1,7 @@
 ## Install
 
 `npm i`
+`npm run build`
 
 ## play
 

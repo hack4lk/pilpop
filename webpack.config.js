@@ -7,5 +7,5 @@ module.exports = {
     path: path.resolve(__dirname, "dist"),
     filename: "bundle.js",
   },
-  watch: true, // Enable watch mode
+  watch: false, // Enable watch mode
 };
