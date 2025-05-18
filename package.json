@@ -1,0 +1,22 @@
+{
+  "name": "pill_popper",
+  "version": "1.0.0",
+  "description": "pill popper game",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack",
+    "dev": "webpack --watch",
+    "play": "http-server -p 8080 -o index.html"
+  },
+  "author": "Lukasz Karpuk",
+  "license": "ISC",
+  "devDependencies": {
+    "@eslint/js": "^9.26.0",
+    "eslint": "^9.26.0",
+    "webpack": "^5.99.8",
+    "webpack-cli": "^6.0.1"
+  },
+  "dependencies": {
+    "http-server": "^14.1.1"
+  }
+}
