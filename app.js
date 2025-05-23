@@ -58,6 +58,8 @@ import { History } from "./history";
     };
 
     that.checkClickable = (target) => {
+      if (that.isAnimating) return false;
+      
       if (
         parseInt(target.dataset.index) !== that.indexPointer[target.dataset.row]
       )
@@ -107,10 +109,6 @@ import { History } from "./history";
         that.targetHeight -= this.board.pillYOffset; // need to update to check if stack can be depleated
         that.indexPointer[target.dataset.row]++;
         that.pillStack.pop(target.dataset.color, target.dataset.id);
-
-        setTimeout(() => {
-          that.isAnimating = false;
-        }, 500);
       }
       const temp = AnimateObject(target, points);
 
@@ -118,10 +116,12 @@ import { History } from "./history";
 
       if (undo) return;
 
-      setTimeout(() => {
-        that.isAnimating = false;
-        const removed = that.pillStack.removethreeconsecutive();
-        if (removed) {
+      const removed = that.pillStack.removethreeconsecutive(true);
+
+      if (removed) {
+        setTimeout(() => {
+          that.pillStack.removethreeconsecutive();
+          that.isAnimating = false;
           that.targetHeight -= that.board.pillYOffset * 3;
           that.points += 10;
           that.board.pointsDisplay(that.points);
@@ -130,8 +130,10 @@ import { History } from "./history";
             target.dataset.id,
             target.dataset.color
           );
-        }
-      }, 500);
+        }, 600);
+      } else{
+        that .isAnimating = false;
+      }
     };
 
     that.checkIfGameOver = () => {
@@ -155,7 +157,7 @@ import { History } from "./history";
       if (that.history.history.length === 0) {
         this.board.displayToast("No history to undo");
         return;
-      };
+      }
 
       if (
         that.history.history[that.history.history.length - 1].action ===

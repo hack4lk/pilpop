@@ -1,13 +1,16 @@
 export function PillStack() {
   this.stack = [];
 
-  this.removethreeconsecutive = function () {
+  this.removethreeconsecutive = function (checkOnly = false) {
     if (this.stack.length < 3) return false;
 
     const lastThree = this.stack.slice(-3);
     const allSameColor = lastThree.every(
       (item) => item.color === lastThree[0].color
     );
+
+    if (checkOnly && allSameColor) return true;
+    if (checkOnly && !allSameColor) return false;
 
     if (allSameColor) {
       lastThree.forEach((item) => {
