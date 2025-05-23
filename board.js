@@ -48,6 +48,13 @@ export function Board() {
     document.body.appendChild(endGameScreen);
   };
 
+  this.removeEndGameScreen = () => {
+    const endGameScreen = document.querySelector(".endgame-screen");
+    if (endGameScreen) {
+      document.body.removeChild(endGameScreen);
+    }
+  };
+
   this.removeStartScreen = () => {
     const splashScreen = document.querySelector(".splash-screen");
     if (splashScreen) {
@@ -84,7 +91,8 @@ export function Board() {
     }
     const pointsDisplay = document.createElement("div");
     pointsDisplay.className = "points-container";
-    pointsDisplay.style.animationName = points >= 0 ? "addPoints" : "removePoints";
+    pointsDisplay.style.animationName =
+      points >= 0 ? "addPoints" : "removePoints";
     pointsDisplay.innerHTML = `<p>Points: ${points}</p>`;
     this.board.appendChild(pointsDisplay);
   };
@@ -119,6 +127,46 @@ export function Board() {
     toast.className = "toast";
     toast.innerHTML = `<p>${text}</p>`;
     this.board.appendChild(toast);
+  };
+
+  this.displayDifficultyScreen = () => {
+    try {
+      const difficulty = document.querySelector(".difficultyContainer");
+      if (difficulty) {
+        this.board.removeChild(difficulty);
+      }
+    } catch (error) {
+      // points display not found, do nothing
+    }
+    const toast = document.createElement("div");
+    toast.className = "difficultyContainer";
+    toast.innerHTML = `<div class="difficulty">
+        <h1>Choose Your Difficulty</h1>
+        <div class="btnHolder">
+          <button class="easy">
+            <p>Easy</p>
+            <span>Restart from current level</span>
+          </button>
+        </div>
+        <div class="btnHolder">
+          <button class="hard">
+            <p>Hard</p>
+            <span>Restart from level 1</span>
+          </button>
+        </div>
+      </div>`;
+    this.board.appendChild(toast);
+  };
+
+  this.removeDifficultyScreen = () => {
+    try {
+      const difficulty = document.querySelector(".difficultyContainer");
+      if (difficulty) {
+        this.board.removeChild(difficulty);
+      }
+    } catch (error) {
+      // points display not found, do nothing
+    }
   };
 
   return this;

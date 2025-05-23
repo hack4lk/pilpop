@@ -1,4 +1,12 @@
-const pillcolors = ["orange", "green", "blue", "red", "yellow", "purple"];
+const pillcolors = [
+  "orange",
+  "green",
+  "blue",
+  "red",
+  "yellow",
+  "purple",
+  "black",
+];
 
 export const level1 = [
   [pillcolors[2], pillcolors[1], pillcolors[0]],
@@ -177,5 +185,69 @@ export const level5 = [
     pillcolors[3],
     pillcolors[2],
     pillcolors[0],
+  ],
+];
+
+export const level6 = [
+  [
+    pillcolors[2],
+    pillcolors[1],
+    pillcolors[0],
+    pillcolors[3],
+    pillcolors[2],
+    pillcolors[0],
+    pillcolors[6],
+    pillcolors[5],
+  ],
+  [
+    pillcolors[0],
+    pillcolors[1],
+    pillcolors[0],
+    pillcolors[2],
+    pillcolors[1],
+    pillcolors[6],
+    pillcolors[5],
+    pillcolors[3],
+    pillcolors[1],
+  ],
+  [
+    pillcolors[1],
+    pillcolors[2],
+    pillcolors[4],
+    pillcolors[0],
+    pillcolors[6],
+    pillcolors[2],
+    pillcolors[3],
+    pillcolors[5],
+    pillcolors[2],
+    pillcolors[6],
+    pillcolors[2],
+  ],
+  [
+    pillcolors[2],
+    pillcolors[0],
+    pillcolors[3],
+    pillcolors[0],
+    pillcolors[4],
+    pillcolors[6],
+    pillcolors[5],
+    pillcolors[1],
+    pillcolors[3],
+    pillcolors[1],
+    pillcolors[2],
+    pillcolors[6],
+    pillcolors[2],
+  ],
+  [
+    pillcolors[2],
+    pillcolors[1],
+    pillcolors[5],
+    pillcolors[4],
+    pillcolors[1],
+    pillcolors[0],
+    pillcolors[3],
+    pillcolors[2],
+    pillcolors[0],
+    pillcolors[5],
   ],
 ];

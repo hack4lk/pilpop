@@ -1,7 +1,7 @@
 import { AnimateObject } from "./animate";
 import { Board } from "./board";
 import { PillStack } from "./pillstack";
-import { level1, level2, level3, level4, level5 } from "./levels";
+import { level1, level2, level3, level4, level5, level6 } from "./levels";
 import { History } from "./history";
 
 (function () {
@@ -9,26 +9,51 @@ import { History } from "./history";
     let that = this;
 
     that.currentLevel = 0;
-    that.levels = [level1, level2, level3, level4, level5];
+    that.difficultyLevel = 0;
+    that.levels = [level1, level2, level3, level4, level5, level6];
     that.board = new Board();
     that.history = new History();
     that.points = 0;
 
     that.init = function () {
-      console.log("Game initialized");
       that.board.init();
       that.board.showStartScreen();
 
       document.querySelector("#start-button").addEventListener("click", () => {
-        that.startGame();
+        // that.startGame();
+        that.showChooseDifficulty();
       });
     };
 
-    that.startGame = (isNextlevel = false) => {
+    that.showChooseDifficulty = () => {
+      that.board.displayDifficultyScreen();
+      that.board.removeStartScreen();
+
+      document.querySelector(".easy").addEventListener("click", () => {
+        that.difficultyLevel = 0;
+        that.startGame();
+        that.board.removeDifficultyScreen();
+      });
+
+      document.querySelector(".hard").addEventListener("click", () => {
+        that.difficultyLevel = 1;
+        that.startGame();
+        that.board.removeDifficultyScreen();
+      });
+    };
+
+    that.startGame = (isNextlevel = false, restartAtCurrentLevel = false) => {
       if (isNextlevel) {
         that.currentLevel++;
         this.history.history = [];
       }
+
+      if (restartAtCurrentLevel) {
+        that.history.history = [];
+        that.clearBoard();
+        that.points = 0;
+      }
+
       that.pillMatrix = that.levels[that.currentLevel];
       that.targetHeight = 0;
       that.indexPointer = [];
@@ -44,8 +69,8 @@ import { History } from "./history";
 
       that.assignHandlers();
 
-      if (!isNextlevel) {
-        that.board.removeStartScreen();
+      if (!isNextlevel && !restartAtCurrentLevel) {
+        that.board.displayDifficultyScreen();
       }
     };
 
@@ -58,8 +83,9 @@ import { History } from "./history";
     };
 
     that.checkClickable = (target) => {
+      console.log(that.isAnimating);
       if (that.isAnimating) return false;
-      
+
       if (
         parseInt(target.dataset.index) !== that.indexPointer[target.dataset.row]
       )
@@ -78,8 +104,20 @@ import { History } from "./history";
       });
     };
 
+    that.clearBoard = () => {
+      that.pillMatrix.forEach((row, index) => {
+        that.pillMatrix[index].forEach((col, innerIndex) => {
+          const pill = document.querySelector(
+            `[data-row="${index}"][data-index="${innerIndex}"]`
+          );
+          if (pill) {
+            pill.remove();
+          }
+        });
+      });
+    };
+
     that.animatePill = (target, undo = false) => {
-      console.log("animate pill", target);
       that.isAnimating = true;
       let points = [];
 
@@ -109,10 +147,9 @@ import { History } from "./history";
         that.targetHeight -= this.board.pillYOffset; // need to update to check if stack can be depleated
         that.indexPointer[target.dataset.row]++;
         that.pillStack.pop(target.dataset.color, target.dataset.id);
+        that.isAnimating = false;
       }
       const temp = AnimateObject(target, points);
-
-      console.log(that.indexPointer);
 
       if (undo) return;
 
@@ -131,8 +168,8 @@ import { History } from "./history";
             target.dataset.color
           );
         }, 600);
-      } else{
-        that .isAnimating = false;
+      } else {
+        that.isAnimating = false;
       }
     };
 
@@ -149,7 +186,12 @@ import { History } from "./history";
       }
 
       document.querySelector("#replay-button").addEventListener("click", () => {
-        location.reload();
+        if (that.difficultyLevel === 1) {
+          location.reload();
+          return;
+        }
+        that.board.removeEndGameScreen();
+        that.startGame(false, true);
       });
     };
 
@@ -178,7 +220,7 @@ import { History } from "./history";
         that.points -= 10;
         that.board.pointsDisplay(that.points);
       } else {
-        console.log("cannot undo after successful match");
+        // console.log("cannot undo after successful match");
       }
 
       that.history.history.pop();
